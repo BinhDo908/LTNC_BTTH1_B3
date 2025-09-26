@@ -1,74 +1,117 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace BTTH1_B1
+namespace B3_BTTH1
 {
     public partial class Form1 : Form
     {
         public Form1()
         {
             InitializeComponent();
-
-            txtPass.KeyDown += (s, e) =>
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    e.Handled = true;
-                    e.SuppressKeyPress = true;  // Ngừng tiếp tục xử lý sự kiện này
-                    btnLogin.PerformClick();
-
-                }
-            };
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-           
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            string thongbao = "Ten dang nhap la: "
-                + txtUser.Text + "\r\nMat Khau la:" + txtPass.Text;
+            // Đặt chỉ mục Tab
+            txtNhap.TabIndex = 0;
+            btnCapNhat.TabIndex = 1;
+            cbbox.TabIndex = 2;
+            ltBox.TabIndex = 3;
+            btnSum.TabIndex = 4;
+            btnSumEven.TabIndex = 5;
+            btnSumOdd.TabIndex = 6;
+            btnExit.TabIndex = 7;
+        }
 
-            if(checkNho.Checked)
+        // Sự kiện Click của nút "Cập nhật"
+        private void btnCapNhat_Click(object sender, EventArgs e)
+        {
+            if (int.TryParse(txtNhap.Text, out int so))
             {
-                thongbao += "\r\nBan co ghi nho.";
+                cbbox.Items.Add(so); // Thêm số vào ComboBox
+                txtNhap.Clear();     // Xóa nội dung TextBox
+                txtNhap.Focus();     // Đặt con trỏ lại vào TextBox
             }
-            MessageBox.Show(thongbao, "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        }
-        private void btnReset_Click(object sender, EventArgs e)
-        {
-            checkNho.Checked = false;
-
-            ClearAllTextBoxes(this);
-
-            txtUser.Focus();
-        }
-
-        private void ClearAllTextBoxes(Control parent)
-        {
-            foreach (Control c in parent.Controls)
+            else
             {
-                if (c is TextBox tb)
+                MessageBox.Show("Vui lòng nhập một số hợp lệ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Sự kiện SelectedIndexChanged của ComboBox
+        private void cbbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbbox.SelectedItem != null)
+            {
+                int so = (int)cbbox.SelectedItem;
+                ltBox.Items.Clear(); // Xóa danh sách cũ trong ListBox
+
+                for (int i = 1; i <= so; i++)
                 {
-                    tb.Clear();
-                }
-                else if (c.HasChildren)
-                {
-                    ClearAllTextBoxes(c);
+                    if ((so % i) == 0)
+                    {
+                        ltBox.Items.Add(i); // Thêm các ước số vào ListBox
+                    }
                 }
             }
         }
+
+        // Sự kiện Click của nút "Tổng các ước số"
+        private void btnSum_Click(object sender, EventArgs e)
+        {
+            int sum = 0;
+            foreach (var item in ltBox.Items)
+            {
+                sum += (int)item; // Tính tổng các ước số
+            }
+            MessageBox.Show("Tổng các ước số: " + sum, "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // Sự kiện Click của nút "Số lượng các ước số chẵn"
+        private void btnSumEven_Click(object sender, EventArgs e)
+        {
+            int evenCount = 0;
+            foreach (var item in ltBox.Items)
+            {
+                if ((int)item % 2 == 0)
+                {
+                    evenCount++; // Đếm số lượng ước số chẵn
+                }
+            }
+            MessageBox.Show("Số lượng các ước số chẵn: " + evenCount, "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // Sự kiện Click của nút "Số lượng các ước số nguyên tố"
+        private void btnSumOdd_Click(object sender, EventArgs e)
+        {
+            int primeCount = 0;
+            foreach (var item in ltBox.Items)
+            {
+                int number = (int)item;
+                if (IsPrime(number))
+                {
+                    primeCount++; // Đếm số lượng ước số nguyên tố
+                }
+            }
+            MessageBox.Show("Số lượng các ước số nguyên tố: " + primeCount, "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // Kiểm tra số nguyên tố
+        private bool IsPrime(int number)
+        {
+            if (number < 2) return false;
+            for (int i = 2; i <= Math.Sqrt(number); i++)
+            {
+                if (number % i == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void btnExit_Click(object sender, EventArgs e)
         {
-            var dr = MessageBox.Show("Exit Confirmed?", "Confirmed.", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-        if (dr == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-        }
-       
-
+            this.Close();        }
     }
 }
