@@ -12,7 +12,6 @@ namespace B3_BTTH1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Đặt chỉ mục Tab
             txtNhap.TabIndex = 0;
             btnCapNhat.TabIndex = 1;
             cbbox.TabIndex = 2;
@@ -23,14 +22,13 @@ namespace B3_BTTH1
             btnExit.TabIndex = 7;
         }
 
-        // Sự kiện Click của nút "Cập nhật"
         private void btnCapNhat_Click(object sender, EventArgs e)
         {
             if (int.TryParse(txtNhap.Text, out int so))
             {
-                cbbox.Items.Add(so); // Thêm số vào ComboBox
-                txtNhap.Clear();     // Xóa nội dung TextBox
-                txtNhap.Focus();     // Đặt con trỏ lại vào TextBox
+                cbbox.Items.Add(so); 
+                txtNhap.Clear();    
+                txtNhap.Focus();    
             }
             else
             {
@@ -38,36 +36,33 @@ namespace B3_BTTH1
             }
         }
 
-        // Sự kiện SelectedIndexChanged của ComboBox
         private void cbbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbbox.SelectedItem != null)
             {
                 int so = (int)cbbox.SelectedItem;
-                ltBox.Items.Clear(); // Xóa danh sách cũ trong ListBox
+                ltBox.Items.Clear();
 
                 for (int i = 1; i <= so; i++)
                 {
                     if ((so % i) == 0)
                     {
-                        ltBox.Items.Add(i); // Thêm các ước số vào ListBox
+                        ltBox.Items.Add(i); 
                     }
                 }
             }
         }
 
-        // Sự kiện Click của nút "Tổng các ước số"
         private void btnSum_Click(object sender, EventArgs e)
         {
             int sum = 0;
             foreach (var item in ltBox.Items)
             {
-                sum += (int)item; // Tính tổng các ước số
+                sum += (int)item;
             }
             MessageBox.Show("Tổng các ước số: " + sum, "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // Sự kiện Click của nút "Số lượng các ước số chẵn"
         private void btnSumEven_Click(object sender, EventArgs e)
         {
             int evenCount = 0;
@@ -75,13 +70,12 @@ namespace B3_BTTH1
             {
                 if ((int)item % 2 == 0)
                 {
-                    evenCount++; // Đếm số lượng ước số chẵn
+                    evenCount++; 
                 }
             }
             MessageBox.Show("Số lượng các ước số chẵn: " + evenCount, "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // Sự kiện Click của nút "Số lượng các ước số nguyên tố"
         private void btnSumOdd_Click(object sender, EventArgs e)
         {
             int primeCount = 0;
@@ -90,13 +84,12 @@ namespace B3_BTTH1
                 int number = (int)item;
                 if (IsPrime(number))
                 {
-                    primeCount++; // Đếm số lượng ước số nguyên tố
+                    primeCount++;
                 }
             }
             MessageBox.Show("Số lượng các ước số nguyên tố: " + primeCount, "Kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // Kiểm tra số nguyên tố
         private bool IsPrime(int number)
         {
             if (number < 2) return false;
@@ -115,3 +108,4 @@ namespace B3_BTTH1
             this.Close();        }
     }
 }
+
